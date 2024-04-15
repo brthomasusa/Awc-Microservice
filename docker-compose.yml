@@ -1,0 +1,75 @@
+version: "3.7" # optional since v1.27.0
+
+services:
+    awc-gateway-web:
+        image: awc-gateway-web
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Info99Gum
+            - ASPNETCORE_HTTP_PORTS=5221
+            - ASPNETCORE_HTTPS_PORTS=7207
+        volumes:
+            - /home/bthomas/.aspnet/https/:/https:ro               
+        build:
+            context: .
+            dockerfile: src/ApiGateways/Web/Web.Bff/Dockerfile
+        ports:
+            - "5221:5221"
+            - "7207:7207"
+        networks:
+            - awc-net
+    awc-person-api:
+        image: person-api-svc
+        container_name: awc-person-api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Info99Gum
+            - ASPNETCORE_HTTP_PORTS=5238
+            - ASPNETCORE_HTTPS_PORTS=7112
+            - ConnectionStrings__AwcDb=Server=tcp:awc-person-api-db,1433;Database=AdventureWorks_Test;uid=sa;Password=Info99Gum;TrustServerCertificate=True
+        volumes:
+            - /home/bthomas/.aspnet/https/:/https:ro
+        ports:
+            - "5238:5238"
+            - "7112:7112"
+        build:
+            context: .
+            dockerfile: src/Services/PersonData/PersonData.API/Dockerfile
+        networks:
+            - awc-net            
+        depends_on:
+            - awc-person-api-db
+    awc-person-api-db:
+        image: "mcr.microsoft.com/mssql/server:2022-latest"
+        container_name: awc-person-api-db
+        environment:
+            - ACCEPT_EULA=y
+            - SA_PASSWORD=Info99Gum
+            - shm-size=2g
+        ports:
+            - 1435:1433
+        volumes:
+            - awc-test:/var/opt/mssql/
+        networks:
+            - awc-net            
+    awc-person-api.seq:
+        image: datalust/seq:latest
+        container_name: awc-person-api-seq
+        environment:
+            - ACCEPT_EULA=Y
+        ports:
+            - 5341:5341
+            - 8081:80
+        networks:
+            - awc-net                        
+
+
+networks:
+    awc-net:
+
+
+volumes:
+    awc-test:
+        external: true
