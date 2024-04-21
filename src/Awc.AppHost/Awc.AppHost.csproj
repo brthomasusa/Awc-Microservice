@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Services\PersonData\PersonData.API\PersonData.API.csproj" />
+	<ProjectReference Include="..\ApiGateways\Web\Web.Bff\web.Bff.csproj" />
   </ItemGroup>
 
 </Project>

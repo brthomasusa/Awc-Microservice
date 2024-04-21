@@ -15,6 +15,8 @@ try
         configuration.ReadFrom.Configuration(context.Configuration)
     );
 
+    builder.AddServiceDefaults();
+
     var startup = new AWC.PersonData.API.Startup(builder.Configuration);
     startup.ConfigureServices(builder.Services);
 

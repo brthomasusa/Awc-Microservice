@@ -1,21 +1,37 @@
-var builder = WebApplication.CreateBuilder(args);
+using Serilog;
+using Web.Bff.Middleware;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Information("Starting web gateway");
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.AddServiceDefaults();
+
+    builder.Host.UseSerilog((context, configuration) =>
+        configuration.ReadFrom.Configuration(context.Configuration)
+    );
+
+    builder.Services.AddReverseProxy()
+        .LoadFromConfig(builder.Configuration
+        .GetSection("ReverseProxy"))
+        .AddServiceDiscoveryDestinationResolver();
+
+    var app = builder.Build();
+
+    app.UseMiddleware<RequestLogContextMiddleware>();
+    app.UseSerilogRequestLogging();
+    // app.UseExceptionHandler();
+    app.MapReverseProxy();
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.MapReverseProxy();
-
-app.Run();
+finally
+{
+    Log.CloseAndFlush();
+}

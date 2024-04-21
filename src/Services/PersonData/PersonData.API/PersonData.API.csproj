@@ -39,5 +39,8 @@
     <InternalsVisibleTo Include="PersonData.UnitTests" />
     <InternalsVisibleTo Include="PersonData.IntegrationTests" />
   </ItemGroup>
-  
+
+    <ItemGroup>
+	    <ProjectReference Include="..\..\..\Awc.ServiceDefaults\Awc.ServiceDefaults.csproj" />
+    </ItemGroup>	
 </Project>

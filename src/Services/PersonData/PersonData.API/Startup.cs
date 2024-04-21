@@ -15,6 +15,7 @@ public class Startup(IConfiguration configuration)
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.ConfigureCors();
+        
         services.AddMediatrServices();
         services.AddFluentValidators();
         services.AddPersistence();
@@ -42,7 +43,7 @@ public class Startup(IConfiguration configuration)
         app.UseRouting();
         app.UseCors("CorsPolicy");
         app.MapPersonEndpoints();
-
+        app.MapDefaultEndpoints();
         app.Run();
     }
 }
