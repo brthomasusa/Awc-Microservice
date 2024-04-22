@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awc.ServiceDefaults", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus", "src\Services\EventBus\EventBus.csproj", "{25F4BC42-0DCF-4204-9AD2-438B958A717E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusRabbitMQ", "src\Services\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{4543B046-E008-418A-8510-BBFB7065DD87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{25F4BC42-0DCF-4204-9AD2-438B958A717E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25F4BC42-0DCF-4204-9AD2-438B958A717E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25F4BC42-0DCF-4204-9AD2-438B958A717E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4543B046-E008-418A-8510-BBFB7065DD87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4543B046-E008-418A-8510-BBFB7065DD87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4543B046-E008-418A-8510-BBFB7065DD87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4543B046-E008-418A-8510-BBFB7065DD87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +97,6 @@ Global
 		{776EE4A5-537A-46B5-8BEE-C2DBFF8B86AF} = {E2730C99-795D-41AF-A859-B26A8D9649D8}
 		{9C36432E-0FC3-4E8D-B000-6DE0916375D8} = {E2730C99-795D-41AF-A859-B26A8D9649D8}
 		{25F4BC42-0DCF-4204-9AD2-438B958A717E} = {A4AFFD13-DF01-4AFF-B376-7CB95E525748}
+		{4543B046-E008-418A-8510-BBFB7065DD87} = {A4AFFD13-DF01-4AFF-B376-7CB95E525748}
 	EndGlobalSection
 EndGlobal
