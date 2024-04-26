@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using AWC.PersonData.API.Application.Abstractions.Messaging;
 using AWC.PersonData.API.Application.Features.CreatePerson;
 using AWC.PersonData.API.Application.Behaviors;
 using AWC.PersonData.API.Domain.Interfaces;

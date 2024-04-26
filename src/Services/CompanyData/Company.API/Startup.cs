@@ -1,55 +1,44 @@
-// using AWC.Server.Contracts;
-// using AWC.Server.Extensions;
-// using AWC.Server.Interceptors;
-// using AWC.Server.Middleware;
-using MediatR;
-using NLog;
-using NLog.Web;
+using AWC.Company.API.DependencyInjection;
+using AWC.Company.API.Middleware;
 
-namespace AWC.EmployeeMgmt.API
+
+namespace AWC.Company.API;
+
+public class Startup(IConfiguration configuration)
 {
-    public class Startup
+    public IConfiguration Configuration { get; } = configuration;
+
+    public void ConfigureServices(IServiceCollection services)
     {
-        public Startup(IConfiguration configuration)
-            => Configuration = configuration;
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
 
-        public IConfiguration Configuration { get; }
+        services.ConfigureCors();
+        services.AddMediatrServices();
+        services.AddFluentValidators();
+        services.AddMappings();
 
-        public void ConfigureServices(IServiceCollection services)
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+
+    }
+
+    public void Configure(WebApplication app, IWebHostEnvironment env)
+    {
+        if (app.Environment.IsDevelopment())
         {
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-
-
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+        else
+        {
+            app.UseHsts();
         }
 
-        public void Configure(WebApplication app, IWebHostEnvironment env)
-        {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            // app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-            app.UseRouting();
-            app.UseCors("CorsPolicy");
-
-            app.MapRazorPages();
-            app.MapControllers();
-            app.MapFallbackToFile("index.html");
-
-            app.Run();
-        }
+        app.UseRouting();
+        app.UseCors("CorsPolicy");
+        // app.MapPersonEndpoints();
+        app.MapDefaultEndpoints();
+        app.Run();
     }
 }

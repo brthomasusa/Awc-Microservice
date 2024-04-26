@@ -1,44 +1,47 @@
-var builder = WebApplication.CreateBuilder(args);
+using Serilog;
+using AWC.Company.API.Middleware;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Information("Starting CompanyData.API microservice");
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Host.UseSerilog((context, configuration) =>
+        configuration.ReadFrom.Configuration(context.Configuration)
+    );
+
+    builder.AddServiceDefaults();
+
+    var startup = new AWC.Company.API.Startup(builder.Configuration);
+    startup.ConfigureServices(builder.Services);
+
+    var app = builder.Build();
+
+    app.UseMiddleware<RequestLogContextMiddleware>();
+    app.UseSerilogRequestLogging();
+    app.UseExceptionHandler();
+
+    startup.Configure(app, builder.Environment);
+
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "CompanyData.API microservice terminated unexpectedly.");
+}
+finally
+{
+    Log.CloseAndFlush();
 }
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+namespace AWC.Company.API
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    public partial class Program
+    {
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
-app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
 }
