@@ -4,13 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <IsPackable>true</IsPackable>
-    <RootNamespace>AWC.Shared.Kernel</RootNamespace>
-    <PackageId>BTechnical-Consulting.SharedKernel</PackageId>
-    <Version>1.0.2</Version>
-    <Authors>bthomas</Authors>
-    <Company>BTechnical-Consulting</Company>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>    
+    <RootNamespace>AWC.Shared.Kernel</RootNamespace>   
   </PropertyGroup>
 
   <ItemGroup>
