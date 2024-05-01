@@ -1,5 +1,6 @@
 using Serilog;
 using AWC.Company.API.Middleware;
+using AWC.Person.API.Infrastructure.Persistence;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -15,6 +16,7 @@ try
         configuration.ReadFrom.Configuration(context.Configuration)
     );
 
+    builder.AddSqlServerDbContext<AwcContext>("companydb");
     builder.AddServiceDefaults();
 
     var startup = new AWC.Company.API.Startup(builder.Configuration);

@@ -1,6 +1,6 @@
 using AWC.Company.API.DependencyInjection;
 using AWC.Company.API.Middleware;
-
+using AWC.Person.API.Infrastructure.Persistence;
 
 namespace AWC.Company.API;
 
@@ -29,6 +29,12 @@ public class Startup(IConfiguration configuration)
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<AwcContext>();
+                context.Database.EnsureCreated();
+            }
         }
         else
         {
