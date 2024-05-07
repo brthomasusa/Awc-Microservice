@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Services\PersonData\PersonData.API\PersonData.API.csproj" />
-	<ProjectReference Include="..\Services\companyData\Company.API\Company.API.csproj" />
+	<ProjectReference Include="..\Services\CompanyData\Company.API\Company.API.csproj" />
 	<ProjectReference Include="..\ApiGateways\Web\Web.Bff\web.Bff.csproj" />
   </ItemGroup>
 

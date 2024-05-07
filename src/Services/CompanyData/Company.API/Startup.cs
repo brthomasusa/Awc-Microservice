@@ -30,11 +30,9 @@ public class Startup(IConfiguration configuration)
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<AwcContext>();
-                context.Database.EnsureCreated();
-            }
+            using var scope = app.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<AwcContext>();
+            //context.Database.EnsureCreated();
         }
         else
         {
